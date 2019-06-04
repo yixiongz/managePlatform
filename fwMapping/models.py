@@ -4,7 +4,6 @@ from django.db import models
 # 内网地址, wanip 一对多对应外网地址表
 class Laninter(models.Model):
     lanip = models.GenericIPAddressField()
-    wanip = models.ForeignKey(to='Waninter', to_field='wanip', on_delete=models.CASCADE)
 
 
 # 外网地址
@@ -22,11 +21,12 @@ class Mapping(models.Model):
     '''
     mapid = models.PositiveIntegerField()
     serid = models.PositiveIntegerField()
-    chiose = ((1, "udp"), (2, "tcp"), (3, "icmp"))
+    chiose = ((1, "tcp"), (2, "udp"), (3, "icmp"))
     protocol = models.IntegerField(choices=chiose, default=1)
     lanport = models.PositiveIntegerField()
     wanport = models.PositiveIntegerField()
-    lanip = models.OneToOneField(to='Laninter', on_delete=models.CASCADE)
+    lanip = models.ForeignKey(to='Laninter', on_delete=models.CASCADE)
+    wanip = models.ForeignKey(to='Waninter', to_field='id', on_delete=models.CASCADE)
 
     class Meta:
         unique_together = ('lanip', 'lanport', 'wanport')
