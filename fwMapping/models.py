@@ -3,10 +3,12 @@ from django.db import models
 
 # 内网地址, wanip 一对多对应外网地址表
 class Laninter(models.Model):
-    lanip = models.GenericIPAddressField()
+    # IP必须唯一
+    lanip = models.GenericIPAddressField(unique=True)
 
     def __str__(self):
         return self.lanip
+
 
 # 外网地址
 class Waninter(models.Model):
@@ -30,7 +32,7 @@ class Mapping(models.Model):
     lanport = models.PositiveIntegerField()
     wanport = models.PositiveIntegerField()
     lanip = models.ForeignKey(to='Laninter', on_delete=models.CASCADE)
-    wanip = models.ForeignKey(to='Waninter', to_field='id', on_delete=models.CASCADE)
+    wanip = models.ForeignKey(to='Waninter', on_delete=models.CASCADE)
 
     class Meta:
         unique_together = ('lanip', 'lanport', 'wanport')

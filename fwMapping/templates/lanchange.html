@@ -1,0 +1,63 @@
+{% extends 'index.html' %}
+
+{% block right_box %}
+    {% load static %}
+    <script src="{% static 'js/jquery-3.3.1.js' %}"></script>
+
+    <div class="clearfix">
+        <h2 class="sub-header pull-left">防火墙映射关系-内网地址修改</h2>
+    </div>
+
+    <div class="form-data">
+        {% for form in forms %}
+            <div class="form-group">
+                <label for="{{ form.id_for_label }}" class="col-md-2">{{ form.label }}</label>
+                <div class="col-md-10">{{ form }} <span
+                        class="help-block span_errors pull-right">{{ form.errors.0 }}</span></div>
+            </div>
+        {% endfor %}
+        <span id="exists_erros" class="pull-right help-block span_errors"></span>
+    </div>
+
+    <button class="upbtn btn btn-default btn-lg btn-block">提交</button>
+
+    <script>
+        $(".upbtn").on('click', function () {
+            var formData = new FormData();
+            var $inputdata = $('input').serializeArray();
+            formData.append('lanip', $("[name='lanip']").val());
+            formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+            console.log({{ map_list.mapid }});
+
+            $.ajax({
+                url: "/fwmapping/lanchange/",
+                type: "post",
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function (data) {
+                    if (data.status == 10001) {
+                        $.each(data.msg, function (key, value) {
+                            {# key是mapid， value是错误内容#}
+                            var error_id = $("#id_" + key);
+                            error_id.parent().children('.span_errors').html(value[0].message);
+                            if (key == "__all__") {
+                                console.log(value[0].message);
+                                $("#exists_erros").text(value[0].message)
+                            }
+                        })
+                    } else if (data.status == 10000) {
+                        $("#exists_erros").text("添加成功 - 5秒钟后返回关系页面");
+                        setInterval(function () {
+                            location.href = "{% url 'fwMapping:lanindex' %}"
+                        }, 5000)
+                    }
+                    setInterval(function () {
+                        $(".span_errors").html("")
+                    }, 5100)
+                }
+            })
+
+        })
+    </script>
+{% endblock %}

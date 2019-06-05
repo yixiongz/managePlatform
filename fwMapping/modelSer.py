@@ -37,3 +37,19 @@ class MappingForm(forms.ModelForm):
             "wanip": {"required": "不能为空"},
             "wanport": {"required": "不能为空"},
         }
+
+
+class LanForm(MappingForm):
+    class Meta:
+        model = models.Laninter
+        fields = "__all__"
+        labels = {
+            "lanip": "内网IP",
+        }
+        widgets = {
+            "lanip": forms.widgets.TextInput(attrs={"class": "form-control"}),
+        }
+
+        error_messages = {
+            "lanip": {"required": "不能为空"},
+        }
