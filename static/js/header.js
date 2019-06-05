@@ -1,7 +1,6 @@
 $(function() {
 	$('.d-firstNav').click(function(e) {
-		console.log("111");
-		dropSwift($(this), '.d-firstDrop');	   
+		dropSwift($(this), '.d-firstDrop');
 		e.stopPropagation();
 	});
 	$('.d-secondNav').click(function(e) {
@@ -17,8 +16,7 @@ $(function() {
 	 */
 	function dropSwift(dom, drop) {
 		//点击当前元素，收起或者伸展下一级菜单
-		
-		
+
 		dom.next().slideToggle();
 		
 		//设置旋转效果

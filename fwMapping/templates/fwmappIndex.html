@@ -1,0 +1,83 @@
+{% extends 'index.html' %}
+
+{% block right_box %}
+    {% load static %}
+    <script src="{% static 'js/jquery-3.3.1.js' %}"></script>
+    <div class="clearfix">
+        <h2 class="sub-header pull-left">防火墙映射关系</h2>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <tr>
+                {% for form in forms %}
+                    <th>{{ form.label }}</th>
+                {% endfor %}
+                <th colspan="2">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for mapping in mapping_list %}
+                <tr>
+                    <td>{{ mapping.mapid }}</td>
+                    <td>{{ mapping.serid }}</td>
+                    <td>{{ mapping.get_protocol_display }}</td>
+                    <td>{{ mapping.lanport }}</td>
+                    <td>{{ mapping.wanport }}</td>
+                    <td>{{ mapping.lanip.lanip }}</td>
+                    <td>{{ mapping.wanip.wanip }}</td>
+                    <td>
+                        <span>
+                            <a href="{% url 'fwMapping:change' mapping.mapid %}">修改</a>
+                            <a href="#" class="delete">删除</a>
+                        </span>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% csrf_token %}
+
+    <button class="pull-right btn btn-success"><a href="{% url 'fwMapping:add' %}">添加</a></button>
+
+    <script>
+        $(".delete").on('click', function () {
+            swal({
+                title: "确认删除?",
+                text: "再次确认, 如果删除点击确认, 取消点返回!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        {#var mid = $(this).parent().parent().parent().children().first().text()#}
+                        {#  向上找两级，parent(),parent  #}
+                        var mid = $(this).parents().eq(2).children().first().text();
+
+                        $.ajax({
+                            url: "{% url 'fwMapping:delete' %}",
+                            type: "post",
+                            data: {"mid": mid, "csrfmiddlewaretoken": '{{csrf_token}}'},
+                            success: function (data) {
+                                if (data.status == 10000) {
+                                    swal("删除成功!", {icon: "success",});
+                                    {# 定时2秒之后在进行删除#}
+                                    setInterval(function () {
+                                        location.reload()
+                                    },2000)
+                                } else {
+                                    swal("删除失败!", {icon: "warning",});
+                                }
+                            }
+                        })
+
+
+                    }
+                });
+
+        })
+    </script>
+
+{% endblock %}

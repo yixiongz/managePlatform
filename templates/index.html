@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
     <link rel="stylesheet" href="{% static 'css/header.css' %}">
-{#    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">#}
+    {#    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">#}
 
 </head>
 
@@ -26,7 +26,31 @@
     <div class="row">
         {% include 'header1.html' %}
         <div class="col-sm-3 col-md-2 sidebar">
-            {% include 'leftNavigation.html' %}
+            {#            {% include 'leftNavigation.html' %}#}
+
+            <div class="s-side ">
+                <ul class="nav nav-sidebar">
+                    <li class="first">
+                        <div class="d-firstNav s-firstNav clearfix">
+                            <span><a href="">防火墙映射关系</a></span>
+                        </div>
+                        <ul class="d-firstDrop s-firstDrop">
+                            <li>
+                                <div class="d-secondNav s-secondNav">
+                                    <span><a href="#">内网地址</a></span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="d-secondNav s-secondNav">
+                                    <span><a href="#">外网地址</a></span>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+
         </div>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -42,6 +66,7 @@
 <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
 <script src="{% static 'js/holder.min.js' %}"></script>
 <script src="{% static 'js/header.js' %}"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 
 </body>

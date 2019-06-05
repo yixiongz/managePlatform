@@ -18,3 +18,22 @@ class MappingForm(forms.ModelForm):
             "wanip": "外网IP",
             "wanport": "外网端口",
         }
+        widgets = {
+            "mapid": forms.widgets.NumberInput(attrs={"class": "form-control"}),
+            "serid": forms.widgets.NumberInput(attrs={"class": "form-control"}),
+            "protocol": forms.widgets.Select(attrs={"class": "form-control"}),
+            "lanip": forms.widgets.Select(attrs={"class": "form-control"}),
+            "lanport": forms.widgets.NumberInput(attrs={"class": "form-control"}),
+            "wanip": forms.widgets.Select(attrs={"class": "form-control"}),
+            "wanport": forms.widgets.NumberInput(attrs={"class": "form-control"})
+        }
+
+        error_messages = {
+            "mapid": {"required": "不能为空"},
+            "serid": {"required": "不能为空"},
+            "protocol": {"required": "不能为空"},
+            "lanip": {"required": "不能为空"},
+            "lanport": {"required": "不能为空"},
+            "wanip": {"required": "不能为空"},
+            "wanport": {"required": "不能为空"},
+        }

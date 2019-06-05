@@ -5,11 +5,15 @@ from django.db import models
 class Laninter(models.Model):
     lanip = models.GenericIPAddressField()
 
+    def __str__(self):
+        return self.lanip
 
 # 外网地址
 class Waninter(models.Model):
     wanip = models.GenericIPAddressField(unique=True)
 
+    def __str__(self):
+        return self.wanip
 
 # 关系映射表， 映射对照于内网
 class Mapping(models.Model):

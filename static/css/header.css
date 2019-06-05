@@ -116,3 +116,9 @@ ul {
 .sidebar {
     background: rgba(0, 0, 0, 0);;
 }
+
+
+/*错误提示*/
+.span_errors {
+    font-size: 12px;
+}
