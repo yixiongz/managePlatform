@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'fwMapping.apps.FwmappingConfig',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [

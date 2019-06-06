@@ -9,12 +9,14 @@ from django.test import TestCase
 # xxx_dic ={"lanip": "192.168.1.5", "csrfmiddlewaretoken": "D7n97SDJmvHtiB72FHQfEaehiZ8ym1EsNlLxXzuK6KcwvBo8Dqxz5Un7q8AuCQWP", "id": "11"}
 # print(xxx_dic.pop("id"))
 
-def addddd():
-    if a > 2:
-        a = 1
-    else:
-        a = 2
-    return a
+# def addddd():
+#     if a > 2:
+#         a = 1
+#     else:
+#         a = 2
+#     return a
+#
+# a= addddd()
+# print(a)
 
-a= addddd()
-print(a)
+

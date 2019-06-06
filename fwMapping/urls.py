@@ -10,7 +10,6 @@ urlpatterns = [
     path('change/', views.Fwchange.as_view(), name="change"),
 
     path('landetail/', views.LanDetail.as_view({'get': 'list', 'delete': 'delete'}), name="lanDetail"),
+    # 添加或修改路由
     path('lanchange', views.Lanchange.as_view(), name="lanChange"),
-
-    path('lanadd/', views.lanAdd, name="lanadd"),
 ]

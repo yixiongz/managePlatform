@@ -7,7 +7,7 @@
     <div class="clearfix">
         <h2 class="sub-header pull-left">防火墙映射关系-内网</h2>
     </div>
-
+    <p>测试提示--indexadd.html</p>
     <div class="form-data">
         {% for form in forms %}
         <div class="form-group">
@@ -34,7 +34,7 @@
         formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
 
         $.ajax({
-            url: "{% url 'fwMapping:lanadd' %}",
+            url: "{% url 'fwMapping:lanChange' %}",
             type: "post",
             processData: false,
             contentType: false,

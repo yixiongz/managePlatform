@@ -33,23 +33,17 @@
             });
             formData.append('id', {{ queryset.pk }});
 
-
-            {#console.log({{ queryset.pk }});#}
-            {#var lanip = $("[name='lanip']").val();#}
-            {#var jsonstr = {"id": {{queryset.pk}}, "lanip": lanip, "csrfmiddlewaretoken": '{{ csrf_token }}'}#}
-
             $.ajax({
                 url: '{% url "fwMapping:lanChange" %}',
                 type: "put",
                 processData: false,
                 contentType: false,
-                {#contentType: 'application/json',#}
-                {#dataType: 'json',#}
-                {#data: JSON.stringify(jsonstr),#}
                 data: formData,
                 success: function (data) {
+                    console.log(data)
                     if (data.status == 10001) {
                         $.each(data.msg, function (key, value) {
+
                             {# key是mapid， value是错误内容#}
                             var error_id = $("#id_" + key);
                             error_id.parent().children('.span_errors').html(value[0].message);
