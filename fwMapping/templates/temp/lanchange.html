@@ -5,7 +5,7 @@
     <script src="{% static 'js/jquery-3.3.1.js' %}"></script>
 
     <div class="clearfix">
-        <h2 class="sub-header pull-left">防火墙映射关系</h2>
+        <h2 class="sub-header pull-left">防火墙映射关系-内网地址修改</h2>
     </div>
 
     <div class="form-data">
@@ -25,23 +25,13 @@
         $(".upbtn").on('click', function () {
             var formData = new FormData();
             var $inputdata = $('input').serializeArray();
-            $.each($inputdata, function (key, value) {
-                {# key: 序列号，  value {{name: "mapid", value: ""}} #}
-                formData.append(value.name, value.value);
-            });
-            formData.append('id', {{ queryset.pk }});
-
-            formData.append('wanip', $("[name='wanip']").val());
             formData.append('lanip', $("[name='lanip']").val());
-            formData.append('protocol', $("[name='protocol']").val());
             formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-            var mid = $("[name='mapid']").val();
+            console.log({{ map_list.id }});
 
             $.ajax({
-                url: '{% url "fwMapping:change" %}',
-                {#url: {% url 'fwMapping:change' mid %},#}
-                type: "put",
-                {#type: "post",#}
+                url: "/fwmapping/lanchange/{{ map_list.id }}",
+                type: "post",
                 processData: false,
                 contentType: false,
                 data: formData,
@@ -57,10 +47,10 @@
                             }
                         })
                     } else if (data.status == 10000) {
-                        $("#exists_erros").text("添加成功 - 3秒钟后返回关系页面");
+                        $("#exists_erros").text("添加成功 - 2秒钟后返回关系页面");
                         setInterval(function () {
-                            location.href = "{% url 'fwMapping:indexDetail' %}"
-                        }, 3000)
+                            location.href = "{% url 'fwMapping:lanDetail' %}"
+                        }, 2000)
                     }
                     setInterval(function () {
                         $(".span_errors").html("")

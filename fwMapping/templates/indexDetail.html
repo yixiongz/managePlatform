@@ -4,25 +4,32 @@
     {% load static %}
     <script src="{% static 'js/jquery-3.3.1.js' %}"></script>
     <div class="clearfix">
-        <h2 class="sub-header pull-left">防火墙映射关系--内网地址添加</h2>
+        <h2 class="sub-header pull-left">防火墙映射关系</h2>
     </div>
 
     <div class="table-responsive">
         <table class="table table-striped">
             <tr>
-                <th>ID</th>
-                <th>内网IP</th>
+                {% for form in forms %}
+                    <th>{{ form.label }}</th>
+                {% endfor %}
                 <th colspan="2">操作</th>
             </tr>
             </thead>
             <tbody>
-            {% for mapping in mapping_list %}
+            {% for mapping in queryset %}
                 <tr>
                     <td>{{ mapping.id }}</td>
-                    <td>{{ mapping.lanip }}</td>
+                    <td>{{ mapping.serid }}</td>
+                    <td>{{ mapping.get_protocol_display }}</td>
+                    <td>{{ mapping.lanport }}</td>
+                    <td>{{ mapping.wanport }}</td>
+                    <td>{{ mapping.lanip.lanip }}</td>
+                    <td>{{ mapping.wanip.wanip }}</td>
                     <td>
                         <span>
-                            <a href="{% url 'fwMapping:lanchange' mapping.id %}">修改</a>
+{#                            <a href="{% url 'fwMapping:change' mapping.mapid %}">修改</a>#}
+                            <a href="{% url 'fwMapping:change' %}?changeID={{ mapping.pk  }}">修改</a>
                             <a href="#" class="delete">删除</a>
                         </span>
                     </td>
@@ -33,8 +40,10 @@
     </div>
     {% csrf_token %}
 
-    <button class="pull-right btn btn-warning"><a href="{% url 'fwMapping:lanadd' %}">添加映射</a> </button>
 
+    <a href="{% url 'fwMapping:add' %}">
+        <button class="pull-right btn btn-warning">添加映射</button>
+    </a>
     <script>
         $(".delete").on('click', function () {
             swal({
@@ -49,18 +58,22 @@
                         {#var mid = $(this).parent().parent().parent().children().first().text()#}
                         {#  向上找两级，parent(),parent  #}
                         var mid = $(this).parents().eq(2).children().first().text();
+                        console.log(mid)
+                        var jsonstr = {"mid": mid, "csrfmiddlewaretoken": '{{csrf_token}}'};
 
                         $.ajax({
-                            url: "{% url 'fwMapping:landelete' %}",
-                            type: "post",
-                            data: {"mid": mid, "csrfmiddlewaretoken": '{{csrf_token}}'},
+                            url: "{% url 'fwMapping:indexDetail' %}",
+                            type: "DELETE",
+                            contentType: 'application/json',
+                            dataType: 'json',
+                            data: JSON.stringify(jsonstr),
                             success: function (data) {
                                 if (data.status == 10000) {
                                     swal("删除成功!", {icon: "success",});
                                     {# 定时2秒之后在进行删除#}
                                     setInterval(function () {
                                         location.reload()
-                                    },2000)
+                                    }, 2000)
                                 } else {
                                     swal("删除失败!", {icon: "warning",});
                                 }

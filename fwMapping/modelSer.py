@@ -2,6 +2,7 @@
 #
 from django import forms
 from fwMapping import models
+from rest_framework import serializers
 
 
 class MappingForm(forms.ModelForm):

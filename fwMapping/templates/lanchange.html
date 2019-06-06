@@ -16,8 +16,10 @@
                         class="help-block span_errors pull-right">{{ form.errors.0 }}</span></div>
             </div>
         {% endfor %}
+        {% csrf_token %}
         <span id="exists_erros" class="pull-right help-block span_errors"></span>
     </div>
+
 
     <button class="upbtn btn btn-default btn-lg btn-block">提交</button>
 
@@ -25,15 +27,25 @@
         $(".upbtn").on('click', function () {
             var formData = new FormData();
             var $inputdata = $('input').serializeArray();
-            formData.append('lanip', $("[name='lanip']").val());
-            formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-            console.log({{ map_list.mapid }});
+            {# 循环input框, 提交到后端 #}
+            $.each($inputdata, function (key, value) {
+                formData.append(value.name, value.value);
+            });
+            formData.append('id', {{ queryset.pk }});
+
+
+            {#console.log({{ queryset.pk }});#}
+            {#var lanip = $("[name='lanip']").val();#}
+            {#var jsonstr = {"id": {{queryset.pk}}, "lanip": lanip, "csrfmiddlewaretoken": '{{ csrf_token }}'}#}
 
             $.ajax({
-                url: "/fwmapping/lanchange/",
-                type: "post",
+                url: '{% url "fwMapping:lanChange" %}',
+                type: "put",
                 processData: false,
                 contentType: false,
+                {#contentType: 'application/json',#}
+                {#dataType: 'json',#}
+                {#data: JSON.stringify(jsonstr),#}
                 data: formData,
                 success: function (data) {
                     if (data.status == 10001) {
@@ -47,10 +59,10 @@
                             }
                         })
                     } else if (data.status == 10000) {
-                        $("#exists_erros").text("添加成功 - 5秒钟后返回关系页面");
+                        $("#exists_erros").text("添加成功 - 2秒钟后返回关系页面");
                         setInterval(function () {
-                            location.href = "{% url 'fwMapping:lanindex' %}"
-                        }, 5000)
+                            location.href = "{% url 'fwMapping:lanDetail' %}"
+                        }, 2000)
                     }
                     setInterval(function () {
                         $(".span_errors").html("")

@@ -5,13 +5,12 @@ from fwMapping import views
 app_name = "fwMapping"
 urlpatterns = [
     # path('index/', views.index, name="index"),
-    path('index/', views.FwindexShow.as_view({'get': 'get'}), name="index"),
+    path('indexdetail/', views.IndexDetail.as_view({'get': 'list', 'delete': 'delete'}), name="indexDetail"),
     path('add/', views.FwmapAdd, name="add"),
-    path('change/<int:mid>', views.fwchange, name="change"),
-    path('delete/', views.delete, name="delete"),
-    path('lanindex/', views.lanindex, name="lanindex"),
-    path('lanadd/', views.lanAdd, name="lanadd"),
-    path('landelete/', views.landelete, name="landelete"),
-    path('lanchange/<int:mid>', views.lanchange, name="lanchange"),
+    path('change/', views.Fwchange.as_view(), name="change"),
 
+    path('landetail/', views.LanDetail.as_view({'get': 'list', 'delete': 'delete'}), name="lanDetail"),
+    path('lanchange', views.Lanchange.as_view(), name="lanChange"),
+
+    path('lanadd/', views.lanAdd, name="lanadd"),
 ]

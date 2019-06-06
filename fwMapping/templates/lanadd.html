@@ -51,10 +51,10 @@
                         }
                     })
                 }else if (data.status == 10000) {
-                    $("#exists_erros").text("添加成功 - 5秒钟后返回关系页面");
+                    $("#exists_erros").text("添加成功 - 2秒钟后返回关系页面");
                     setInterval(function () {
-                        location.href  = "{% url 'fwMapping:lanindex' %}"
-                    },5000)
+                        location.href  = "{% url 'fwMapping:lanDetail' %}"
+                    },2000)
                 }
                 setInterval(function () {
                     $(".span_errors").html("")
