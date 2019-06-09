@@ -12,7 +12,7 @@
             <tr>
                 {% for form in forms %}
                     <th>{{ form.label }}</th>
-{#                    <th>{{ form.name }}</th>#}
+                    {#                    <th>{{ form.name }}</th>#}
                 {% endfor %}
                 <th colspan="2">操作</th>
             </tr>
@@ -30,7 +30,7 @@
                     <td>
                         <span>
 {#                            <a href="{% url 'fwMapping:change' mapping.mapid %}">修改</a>#}
-                            <a href="{% url 'fwMapping:change' %}?changeID={{ mapping.pk  }}">修改</a>
+                            <a href="{% url 'fwMapping:change' %}?changeID={{ mapping.pk }}">修改</a>
                             <a href="#" class="delete">删除</a>
                         </span>
                     </td>
@@ -38,11 +38,14 @@
             {% endfor %}
             </tbody>
         </table>
+
+    {% include 'paginator_page.html' %}
+
     </div>
     {% csrf_token %}
 
 
-    <a href="{% url 'fwMapping:add' %}">
+    <a href="{% url 'fwMapping:change' %}">
         <button class="pull-right btn btn-warning">添加映射</button>
     </a>
     <script>
@@ -74,7 +77,7 @@
                                     {# 定时2秒之后在进行删除#}
                                     setInterval(function () {
                                         location.reload()
-                                    }, 2000)
+                                    }, 1000)
                                 } else {
                                     swal("删除失败!", {icon: "warning",});
                                 }

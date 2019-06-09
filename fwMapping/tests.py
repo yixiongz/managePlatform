@@ -18,5 +18,26 @@ from django.test import TestCase
 #
 # a= addddd()
 # print(a)
+# a=1
+# print(isinstance(a,int))
 
+import os
+import django
+from django.core import paginator
+
+if __name__ == '__main__':
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'managePlatform.settings')
+    django.setup()
+
+    from fwMapping import models
+    mapp_list = models.Mapping.objects.all().order_by('pk')
+    page = paginator.Paginator(mapp_list, 3)
+    print(page.num_pages)
+    print(page.page_range)
+    # current = page.page(2)
+    # print(current.object_list)
+    # print(current.has_next())
+    # print(current.next_page_number())
+    # print(current.has_previous())
+    # print(current.previous_page_number())
 

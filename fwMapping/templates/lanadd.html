@@ -7,7 +7,6 @@
     <div class="clearfix">
         <h2 class="sub-header pull-left">防火墙映射关系-内网</h2>
     </div>
-    <p>测试提示--indexadd.html</p>
     <div class="form-data">
         {% for form in forms %}
         <div class="form-group">
@@ -23,14 +22,9 @@
     <script>
     $(".upbtn").on('click', function () {
         var formData = new FormData();
-        var $inputdata = $('input').serializeArray();
-        $.each($inputdata, function (key, value) {
-            {# key: 序列号，  value {{name: "mapid", value: ""}} #}
-            formData.append(value.name, value.value);
-        });
-        formData.append('wanip', $("[name='wanip']").val());
+        {#formData.append('wanip', $("[name='wanip']").val());#}
         formData.append('lanip', $("[name='lanip']").val());
-        formData.append('protocol', $("[name='protocol']").val());
+        {#formData.append('protocol', $("[name='protocol']").val());#}
         formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
 
         $.ajax({

@@ -16,6 +16,8 @@
                         class="help-block span_errors pull-right">{{ form.errors.0 }}</span></div>
             </div>
         {% endfor %}
+            {% csrf_token %}
+
         <span id="exists_erros" class="pull-right help-block span_errors"></span>
     </div>
 
@@ -29,19 +31,19 @@
                 {# key: 序列号，  value {{name: "mapid", value: ""}} #}
                 formData.append(value.name, value.value);
             });
+            var $inputdata = $('select').serializeArray();
+            if ($inputdata){
+                $.each($inputdata, function (key, value) {
+                    {# key: 序列号，  value {{name: "mapid", value: ""}} #}
+                    formData.append(value.name, value.value);
+                });
+            }
             formData.append('id', {{ queryset.pk }});
-
-            formData.append('wanip', $("[name='wanip']").val());
-            formData.append('lanip', $("[name='lanip']").val());
-            formData.append('protocol', $("[name='protocol']").val());
-            formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
             var mid = $("[name='mapid']").val();
 
             $.ajax({
                 url: '{% url "fwMapping:change" %}',
-                {#url: {% url 'fwMapping:change' mid %},#}
                 type: "put",
-                {#type: "post",#}
                 processData: false,
                 contentType: false,
                 data: formData,

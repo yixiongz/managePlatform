@@ -31,9 +31,10 @@
             {% endfor %}
             </tbody>
         </table>
+        {% include 'paginator_page.html' %}
+
     </div>
 
-{#    <a href="{% url 'fwMapping:lanadd' %}">#}
     <a href="{% url 'fwMapping:lanChange' %}">
         <button class="pull-right btn btn-warning">添加映射</button>
     </a>

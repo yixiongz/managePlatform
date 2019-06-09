@@ -34,7 +34,7 @@
         formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
 
         $.ajax({
-            url: "{% url 'fwMapping:add' %}",
+            url: "{% url 'fwMapping:change' %}",
             type: "post",
             processData: false,
             contentType: false,
