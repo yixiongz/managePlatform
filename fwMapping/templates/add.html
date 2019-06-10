@@ -28,13 +28,18 @@
             {# key: 序列号，  value {{name: "mapid", value: ""}} #}
             formData.append(value.name, value.value);
         });
-        formData.append('wanip', $("[name='wanip']").val());
-        formData.append('lanip', $("[name='lanip']").val());
-        formData.append('protocol', $("[name='protocol']").val());
-        formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        var $inputdata = $('select').serializeArray();
+        console.log($inputdata.length);
+        if ($inputdata.length >= 1 ){
+            $.each($inputdata, function (key, value) {
+                {# key: 序列号，  value {{name: "mapid", value: ""}} #}
+                formData.append(value.name, value.value);
+            });
+        }
 
         $.ajax({
-            url: "{% url 'fwMapping:change' %}",
+            {#url: "{% url 'fwMapping:change' %}",#}
+            url: "{{ locations.pathname }}",
             type: "post",
             processData: false,
             contentType: false,

@@ -19,19 +19,23 @@
             </thead>
             <tbody>
             {% for mapping in queryset %}
+                {% for foo in mapping.filed %}
+                    {{ foo }}
+                {% endfor %}
+                
                 <tr>
-                    <td>{{ mapping.id }}</td>
-                    <td>{{ mapping.serid }}</td>
-                    <td>{{ mapping.get_protocol_display }}</td>
-                    <td>{{ mapping.lanport }}</td>
-                    <td>{{ mapping.wanport }}</td>
-                    <td>{{ mapping.lanip.lanip }}</td>
-                    <td>{{ mapping.wanip.wanip }}</td>
+                    <td name="id">{{ mapping.id }}</td>
+                    <td name="serid">{{ mapping.serid }}</td>
+                    <td name="protocol">{{ mapping.get_protocol_display }}</td>
+                    <td name="lanport">{{ mapping.lanport }}</td>
+                    <td name="wanport">{{ mapping.wanport }}</td>
+                    <td name="lanip">{{ mapping.lanip.lanip }}</td>
+                    <td name="wanip">{{ mapping.wanip.wanip }}</td>
                     <td>
                         <span>
-{#                            <a href="{% url 'fwMapping:change' mapping.mapid %}">修改</a>#}
                             <a href="{% url 'fwMapping:change' %}?changeID={{ mapping.pk }}">修改</a>
                             <a href="#" class="delete">删除</a>
+                            <a href="#" class="fw_sql">生成</a>
                         </span>
                     </td>
                 </tr>
@@ -83,11 +87,18 @@
                                 }
                             }
                         })
-
-
                     }
                 });
 
+        })
+    
+        $(".fw_sql").on('click', function () {
+            var $tr_value = $(this).parents().eq(2).children();
+            $.each($tr_value, function (k,v) {
+                var $v = $(v);
+                console.log($v)
+            })
+            console.log($("td[name='id']").text())
         })
     </script>
 

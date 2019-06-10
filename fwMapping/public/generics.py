@@ -4,6 +4,8 @@ import json
 from django.shortcuts import redirect, reverse
 from fwMapping.public.paginators import Paginator_page
 from rest_framework.views import APIView
+from django.shortcuts import render
+from django.http import JsonResponse
 
 # 公共返回字典
 class GetRespose(object):
@@ -34,8 +36,6 @@ def listView(request, queryset, serializers_class):
     return get_list
 
 
-
-
 class GenericView(APIView):
     '''
     :param request:  request 中携带过来的数据
@@ -46,6 +46,8 @@ class GenericView(APIView):
 
     queryset = None
     serializers_class = None
+    render_html = None
+    page_num = 10
 
     def get_mid(self, request, *args, **kwargs):
         mid = request.GET.get("changeID")
@@ -61,21 +63,46 @@ class GenericView(APIView):
         # 啥都没的话就直接返回None
         return None
 
-    def postView(self, request, *args, **kwargs):
-        forms = self.serializers_class(request.POST)
-        return self.save(forms)
+    # 主页， 以及分页
+    def listView(self, request, *args, **kwargs):
+        # 使用ID进行排序
+        queryset = self.queryset.objects.all().order_by('pk')
+        # 分页器 request 将对象传入分层器， queryset将数据对象传入， page_num显示多少行
+        p = Paginator_page(request, queryset, self.page_num)
+        get_list = p.get_page
 
+        forms = self.serializers_class(request.POST)
+        get_list["forms"] = forms
+        return render(request, self.render_html, get_list)
+
+    # 修改添加的index页面,
+    def getView(self, request, *args, **kwargs):
+        mid = self.get_mid(request)
+        if mid:
+            forms = self.serializers_class(instance=mid)
+            return render(request, "change.html", {"forms": forms, "queryset": mid})
+        else:
+            forms = self.serializers_class()
+            return render(request, "add.html", {"forms": forms})
+
+    # 添加映射页面
+    def postView(self, request, *args, **kwargs):
+        # print(request.path)  # 获取url路径
+        forms = self.serializers_class(request.POST)
+        return JsonResponse(self.save(forms))
+
+    # 修改映射页面
     def putView(self, request, *args, **kwargs):
         # querySet 转换成字典
         request_dir = request.data.dict()
-        print(request_dir)
         # 删除id并返回它的结果用于查询， 然后就继续执行下边的代码
         mid = request_dir.pop("id")
         queryset = self.queryset.objects.filter(pk=mid).first()
         forms = self.serializers_class(request_dir, instance=queryset)
         # 如果检验成功直接保存, 并返回10000
-        return self.save(forms)
+        return JsonResponse(self.save(forms))
 
+    # 删除
     def deleteView(self, request, queryset):
         mid = json.loads(request.body).get("mid")
         try:
@@ -88,6 +115,7 @@ class GenericView(APIView):
         # 最终将字典返回, 成功的返回状态10000， 失败返回10001
         return status
 
+    # 修改，添加 form保存
     def save(self, forms, *args, **kwargs):
         # 如果检验成功直接保存, 并返回10000
         if forms.is_valid():
@@ -96,5 +124,3 @@ class GenericView(APIView):
         else:
             msg = forms.errors.get_json_data()
             return {"status": 10001, "msg": msg}
-
-

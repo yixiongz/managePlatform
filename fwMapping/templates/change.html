@@ -42,7 +42,8 @@
             var mid = $("[name='mapid']").val();
 
             $.ajax({
-                url: '{% url "fwMapping:change" %}',
+                {#url: '{% url "fwMapping:change" %}',#}
+                url: '{{ location.pathname }}',
                 type: "put",
                 processData: false,
                 contentType: false,

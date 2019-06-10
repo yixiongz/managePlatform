@@ -4,14 +4,14 @@
     {% load static %}
     <script src="{% static 'js/jquery-3.3.1.js' %}"></script>
     <div class="clearfix">
-        <h2 class="sub-header pull-left">防火墙映射关系--内网地址添加</h2>
+        <h2 class="sub-header pull-left">防火墙映射关系--外网地址添加</h2>
     </div>
 
     <div class="table-responsive">
         <table class="table table-striped">
             <tr>
                 <th>ID</th>
-                <th>内网IP</th>
+                <th>外网IP</th>
                 <th colspan="2">操作</th>
             </tr>
             </thead>
@@ -19,10 +19,11 @@
             {% for mapping in queryset %}
                 <tr>
                     <td>{{ mapping.id }}</td>
-                    <td>{{ mapping.lanip }}</td>
+                    <td>{{ mapping.wanip }}</td>
                     <td>
                         <span>
-                            <a href="{% url 'fwMapping:lanChange'%}?changeID={{ mapping.id }}">修改</a>
+
+                            <a href="{% url 'fwMapping:wanChange'%}?changeID={{ mapping.id }}" title="">编辑</a>
                             <a href="#" class="delete">删除</a>
                         </span>
                     </td>
@@ -34,7 +35,7 @@
 
     </div>
 
-    <a href="{% url 'fwMapping:lanChange' %}">
+    <a href="{% url 'fwMapping:wanChange' %}">
         <button class="pull-right btn btn-warning">添加映射</button>
     </a>
 
@@ -54,7 +55,7 @@
                         var mid = $(this).parents().eq(2).children().first().text();
                         var jsonstr = {"mid": mid, "csrfmiddlewaretoken": '{{csrf_token}}'};
                         $.ajax({
-                            url: "{% url 'fwMapping:lanDetail' %}",
+                            url: "{% url 'fwMapping:wanDetail' %}",
                             type: "DELETE",
                             contentType: "application/json",
                             dataType: "json",
@@ -64,7 +65,7 @@
                                     swal("删除成功!", {icon: "success",});
                                     {# 定时2秒之后在进行删除#}
                                     setInterval(function () {
-                                        location.reload()
+                                        location.href = location.pathname
                                     }, 2000)
                                 } else {
                                     swal("删除失败!", {icon: "warning",});
