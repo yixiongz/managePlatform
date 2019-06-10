@@ -118,9 +118,12 @@ class GenericView(APIView):
     # 修改，添加 form保存
     def save(self, forms, *args, **kwargs):
         # 如果检验成功直接保存, 并返回10000
-        if forms.is_valid():
-            forms.save()
-            return {"status": 10000}
-        else:
-            msg = forms.errors.get_json_data()
-            return {"status": 10001, "msg": msg}
+        try:
+            if forms.is_valid():
+                forms.save()
+                return {"status": 10000}
+            else:
+                msg = forms.errors.get_json_data()
+                return {"status": 10001, "msg": msg}
+        except Exception:
+            return {"status": 10001, "msg":{"__all__": [{"message": "添加失败"}]}}

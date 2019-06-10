@@ -4,6 +4,9 @@ from django import forms
 from fwMapping import models
 from rest_framework import serializers
 
+from django.core.exceptions import ValidationError
+from django.forms import Form
+
 
 class MappingForm(forms.ModelForm):
     class Meta:
@@ -39,6 +42,18 @@ class MappingForm(forms.ModelForm):
             "wanport": {"required": "不能为空"},
         }
 
+    def clean_lanport(self):
+        wanport = self.cleaned_data["lanport"]
+        if wanport < 0 or wanport > 65535:
+            raise ValidationError("端口范围0-65535")
+        return self.cleaned_data["lanport"]
+
+    def clean_wanport(self):
+        wanport = self.cleaned_data["wanport"]
+        if wanport < 0 or wanport > 65535:
+            raise ValidationError("端口范围0-65535")
+        return self.cleaned_data["wanport"]
+
 
 class LanForm(MappingForm):
     class Meta:
@@ -54,6 +69,7 @@ class LanForm(MappingForm):
         error_messages = {
             "lanip": {"required": "不能为空"},
         }
+
 
 class WanForm(MappingForm):
     class Meta:
