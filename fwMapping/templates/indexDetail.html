@@ -12,7 +12,6 @@
             <tr>
                 {% for form in forms %}
                     <th>{{ form.label }}</th>
-                    {#                    <th>{{ form.name }}</th>#}
                 {% endfor %}
                 <th colspan="2">操作</th>
             </tr>
@@ -66,9 +65,7 @@
                         {#var mid = $(this).parent().parent().parent().children().first().text()#}
                         {#  向上找两级，parent(),parent  #}
                         var mid = $(this).parents().eq(2).children().first().text();
-                        console.log(mid)
                         var jsonstr = {"mid": mid, "csrfmiddlewaretoken": '{{csrf_token}}'};
-
                         $.ajax({
                             url: "{% url 'fwMapping:indexDetail' %}",
                             type: "DELETE",

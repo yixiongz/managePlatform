@@ -67,6 +67,11 @@
                         setInterval(function () {
                             location.href = "{% url 'fwMapping:indexDetail' %}"
                         }, 2000)
+                    } else if (data.status == 10002) {
+                        swal("添加失败!", "请按步骤手动添加!", "error")
+                            .then((value) => {
+                                window.location.reload()
+                            });
                     }
                     setInterval(function () {
                         $(".span_errors").html("")

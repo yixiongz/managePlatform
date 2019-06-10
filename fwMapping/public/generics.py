@@ -126,4 +126,4 @@ class GenericView(APIView):
                 msg = forms.errors.get_json_data()
                 return {"status": 10001, "msg": msg}
         except Exception:
-            return {"status": 10001, "msg":{"__all__": [{"message": "添加失败"}]}}
+            return {"status": 10002, "msg":{"__all__": [{"message": "添加失败"}]}}
